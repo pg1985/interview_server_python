@@ -61,10 +61,9 @@ def get_post(post_id):
 
 @get('/get_first/')
 def get_a_post():
-	return db['post'].find_one()
+	post = db['post'].find_one()
+	post ['_id'] = str(post['_id'])
+	return post
 	
-	
-
-
 run (host='0.0.0.0', port=4567)
 
