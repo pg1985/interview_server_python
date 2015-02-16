@@ -52,7 +52,7 @@ def edit_post():
 @post ('/set_completed/:post_id')
 def set_completed(post_id):
 	post = request.forms.dict
-	post = db['post'].find_one({'_id':bson.ObjectId(post['_id'])})
+	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
 	post['is_completed'] = 1
 	db.post.save(post)
 	post['_id'] = str(post['_id'])
