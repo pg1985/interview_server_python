@@ -49,6 +49,13 @@ def edit_post():
 	post['_id'] = str(post['_id'])
 	return post
 
+@post ('/set_completed/:post_id')
+def set_completed(post_id):
+	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
+	post['is_deleted'] = '1'
+	db.post.update({'_id': post['_id']},{'$set':post})
+	return '{"updated": "true"}'
+
 
 @get('/get_post/:post_id')
 def get_post(post_id):
