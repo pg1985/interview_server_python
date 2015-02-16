@@ -15,8 +15,7 @@ def test():
 @post('/create/')
 def create_post():
 	new_post = {}
-	print request.forms.get('title')
-	print request.forms.get('desc')
+	print request.forms
 	new_post['title'] = request.forms.get('title')
 	new_post['desc'] = request.forms.get('desc')
 	new_post['is_deleted'] = 0
