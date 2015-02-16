@@ -37,7 +37,8 @@ def delete_post():
 	post['is_deleted'] = 1
 	db.post.save(post)
 	post['_id'] = str(post['_id'])
-	return post
+
+	return '{"deleted": "true"}'
 
 
 @post('/edit_post/')
@@ -53,6 +54,7 @@ def edit_post():
 def get_post(post_id):
 	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
 	post['_id'] = str(post['_id'])
+	print post
 
 	if post['is_deleted'] == 0:
 		return post  
