@@ -55,7 +55,7 @@ def get_post(post_id):
 	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
 	post['_id'] = str(post['_id'])
 
-	if post['is_deleted'] == '0':
+	if post['is_deleted'] == '0' or post['is_deleted'] == 0:
 		return post  
 	else: 
 		return {}
