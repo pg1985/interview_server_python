@@ -56,7 +56,7 @@ def get_post(post_id):
 	post['_id'] = str(post['_id'])
 	print post
 
-	if post['is_deleted'] == 0:
+	if post['is_deleted'] == '0':
 		return post  
 	else: 
 		return {}
