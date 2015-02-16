@@ -43,7 +43,7 @@ def delete_post():
 
 @post('/edit_post/')
 def edit_post():
-	post = request.json
+	post = request.forms.dict
 	post['_id'] = bson.ObjectId(post['_id'])
 	db.post.update({'_id': post['_id']},{'$set':post})
 	post['_id'] = str(post['_id'])
