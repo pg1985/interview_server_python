@@ -18,10 +18,10 @@ def create_post():
 	post_data = request.forms.dict
 	new_post['title'] = post_data['title']
 	new_post['desc'] = post_data['desc']
-	new_post['is_deleted'] = 0
+	new_post['is_deleted'] = '0'
 	new_post['created_date'] = calendar.timegm(datetime.utctimetuple(datetime.now()))
 	new_post['updated_date'] = new_post['created_date']
-	new_post['is_completed'] = 0
+	new_post['is_completed'] = '0'
 
 	db.post.insert(new_post)
 
@@ -34,7 +34,7 @@ def create_post():
 def delete_post():
 	post = request.forms.dict
 	post = db['post'].find_one({'_id':bson.ObjectId(post['_id'])})
-	post['is_deleted'] = 1
+	post['is_deleted'] = '1'
 	db.post.save(post)
 	post['_id'] = str(post['_id'])
 
@@ -49,11 +49,11 @@ def edit_post():
 	post['_id'] = str(post['_id'])
 	return post
 
-@post ('/set_completed/:post_id')
+@post ('/set_completed/')
 def set_completed(post_id):
-	post = request.forms.dict
+	post_data = request.forms.dict
 	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
-	post['is_completed'] = 1
+	post['is_completed'] = post_data['is_completed']
 	db.post.save(post)
 	post['_id'] = str(post['_id'])
 	return post
