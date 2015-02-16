@@ -15,8 +15,8 @@ def test():
 @post('/create/')
 def create_post():
 	new_post = {}
-	new_post['title'] = request.post['title']
-	new_post['desc'] = request.post['desc']
+	new_post['title'] = request.forms.post('title')
+	new_post['desc'] = request.forms.post('desc')
 	new_post['is_deleted'] = 0
 	new_post['created_date'] = calendar.timegm(datetime.utctimetuple(datetime.now()))
 	new_post['updated_date'] = new_post['created_date']
