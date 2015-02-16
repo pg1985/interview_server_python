@@ -15,9 +15,9 @@ def test():
 @post('/create/')
 def create_post():
 	new_post = {}
-	print request.forms
-	new_post['title'] = request.forms.get('title')
-	new_post['desc'] = request.forms.get('desc')
+	post_data = request.forms.dict
+	new_post['title'] = post_data['title']
+	new_post['desc'] = post_data['desc']
 	new_post['is_deleted'] = 0
 	new_post['created_date'] = calendar.timegm(datetime.utctimetuple(datetime.now()))
 	new_post['updated_date'] = new_post['created_date']
@@ -32,7 +32,7 @@ def create_post():
 
 @post('/delete/')
 def delete_post():
-	post = request.forms
+	post = request.forms.dict
 	post = db['post'].find_one({'_id':bson.ObjectId(post['_id'])})
 	post['is_deleted'] = 1
 	db.post.save(post)
