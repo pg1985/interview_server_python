@@ -51,10 +51,12 @@ def edit_post():
 
 @post ('/set_completed/:post_id')
 def set_completed(post_id):
-	post = db['post'].find_one({'_id':bson.ObjectId(post_id)})
-	post['is_deleted'] = '1'
-	db.post.update({'_id': post['_id']},{'$set':post})
-	return '{"updated": "true"}'
+	post = request.forms.dict
+	post = db['post'].find_one({'_id':bson.ObjectId(post['_id'])})
+	post['is_completed'] = 1
+	db.post.save(post)
+	post['_id'] = str(post['_id'])
+	return post
 
 
 @get('/get_post/:post_id')
