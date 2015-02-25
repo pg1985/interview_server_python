@@ -37,6 +37,7 @@ def create_post():
     new_post['created_date'] = calendar.timegm(datetime.utctimetuple(datetime.now()))
     new_post['updated_date'] = new_post['created_date']
     new_post['is_completed'] = '0'
+    new_post['user_id'] = post_data['user_id']
 
     db.post.insert(new_post)
 
