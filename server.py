@@ -7,6 +7,25 @@ import bson
 client = Connection('localhost', port=27017)
 db = client.todo
 
+@post('/create_user')
+def create_user():
+    new_user = {}
+    user_post_data = request.forms.dict
+    new_user['username'] = user_post_data['username']
+    new_user['password'] = user_post_data['password']
+    new_user['is_deleted'] = 0
+    db.user.insert(new_user)
+    new_user['_id'] = str(new_user['_id'])
+
+    return new_user
+
+@get('/get_user/:user_id')
+def get_user():
+    new_user = {}
+    user_post_data = request.forms.dict
+    new_user['username'] = user_post_data['username']
+    new_user['password'] = user_post_data['password']
+
 
 @post('/create/')
 def create_post():
