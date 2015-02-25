@@ -3,6 +3,7 @@ from datetime import datetime
 import calendar
 from pymongo import Connection
 import bson
+import json
 
 client = Connection('localhost', port=27017)
 db = client.todo
@@ -20,11 +21,10 @@ def create_user():
     return new_user
 
 @get('/get_user/:user_id')
-def get_user():
-    new_user = {}
-    user_post_data = request.forms.dict
-    new_user['username'] = user_post_data['username']
-    new_user['password'] = user_post_data['password']
+def get_user(user_id):
+    user = db['post'].find_one({'_id': bson.ObjectId(user_id)})
+
+    return json.dumps(user)
 
 
 @post('/create/')
@@ -43,7 +43,7 @@ def create_post():
 
     new_post['_id'] = str(new_post['_id'])
 
-    return new_post
+    return json.dumps(new_post)
 
 
 @post('/delete/')
@@ -63,7 +63,7 @@ def edit_post():
     post['_id'] = bson.ObjectId(post['_id'])
     db.post.update({'_id': post['_id']}, {'$set': post})
     post['_id'] = str(post['_id'])
-    return post
+    return json.dumps(post)
 
 
 @post('/set_completed/')
@@ -73,7 +73,7 @@ def set_completed(post_id):
     completed_post['is_completed'] = post_data['is_completed']
     db.post.save(completed_post)
     completed_post['_id'] = str(completed_post['_id'])
-    return completed_post
+    return json.dumps(completed_post)
 
 
 @get('/get_post/:post_id')
@@ -82,9 +82,16 @@ def get_post(post_id):
     found_post['_id'] = str(found_post['_id'])
 
     if found_post['is_deleted'] == '0' or found_post['is_deleted'] == 0:
-        return found_post
+        return json.dumps(found_post)
     else:
         return '{"error": "no post found with given ID"}'
+
+@get('/get_posts/:user_id')
+def get_user_posts(user_id):
+    posts = db['post'].find({'user_id': user_id})
+    for post in posts:
+        post['_id'] = str([post['_id']])
+    return json.dumps(posts)
 
 
 run(host='0.0.0.0', port=4567)
